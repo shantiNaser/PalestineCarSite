@@ -1,4 +1,6 @@
-﻿using Auctions.Infrastructure;
+﻿using System.Net;
+using Auctions.Infrastructure;
+using Auctions.Infrastructure.Data;
 
 
 internal class Program
@@ -11,6 +13,8 @@ internal class Program
 
         builder.Services.AddControllers();
 
+        builder.Services.AddTransient<AuctionDbContext>();
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -19,6 +23,20 @@ internal class Program
 
         app.MapControllers();
 
+        SeedDataToAuctionsServiceIfNotExsit(app);
+
         app.Run();
+    }
+
+    private static void SeedDataToAuctionsServiceIfNotExsit(WebApplication app)
+    {
+        try
+        {
+            DbInitializer.InitDb(app);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
     }
 }
