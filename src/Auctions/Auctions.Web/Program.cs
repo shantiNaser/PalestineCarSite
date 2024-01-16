@@ -1,16 +1,24 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Auctions.Infrastructure;
 
-// Add services to the container.
 
-builder.Services.AddControllers();
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
 
-var app = builder.Build();
+        // Add services to the container.
 
-// Configure the HTTP request pipeline.
+        builder.Services.AddControllers();
 
-app.UseAuthorization();
+        var app = builder.Build();
 
-app.MapControllers();
+        // Configure the HTTP request pipeline.
 
-app.Run();
+        app.UseAuthorization();
 
+        app.MapControllers();
+
+        app.Run();
+    }
+}
