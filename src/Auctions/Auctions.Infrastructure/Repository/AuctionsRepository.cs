@@ -14,7 +14,10 @@ public class AuctionsRepository : IAuctionsRepository
 
     public async Task<List<Auction>> GetAllAuctionsAsync()
     {
-        return await this._dbContext.Auctions.Include(x => x.Item).AsNoTracking().ToListAsync();
+        return await this._dbContext.Auctions
+            .Include(x => x.Item)
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public async Task<Auction?> GetAuctionByIdAsync(Guid auctionId)

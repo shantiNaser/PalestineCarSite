@@ -21,10 +21,11 @@ public class CreateAuctionHandler : IRequestHandler<CreateAuctionCommand, Auctio
 
     public async Task<AuctionDto> Handle(CreateAuctionCommand request, CancellationToken cancellationToken)
     {
-        // TODO : Modify this to a SignalR
+        // TODO: Modify this to a SignalR
         // TODO: add Logging here if there's an issue
         // TODO: add curent user as a seller from Login Inforamtion for now let add test
         // TODO: add a generic Pipline to handle the Vaildation using Fluent Validation
+        // TODO: Use the actual user for the seller here
 
         var entity = _mapper.Map<Auction>(request);
         
