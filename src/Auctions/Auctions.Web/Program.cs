@@ -1,4 +1,7 @@
 ﻿using System.Net;
+using System.Text.Json.Serialization;
+using Auctions.Application;
+using Auctions.Application.Mappers;
 using Auctions.Infrastructure;
 using Auctions.Infrastructure.Data;
 
@@ -11,9 +14,19 @@ internal class Program
 
         // Add services to the container.
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
 
         builder.Services.AddTransient<AuctionDbContext>();
+
+        builder.Services.AddAutoMapper(typeof(AuctionsDtoProfile));
+
+        builder.Services
+            .AddApplication()
+            .AddInfrastructure();
 
         var app = builder.Build();
 
