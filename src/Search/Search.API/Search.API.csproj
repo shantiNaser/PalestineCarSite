@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.14" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="MongoDB.Entities" Version="22.0.0" />
+    <PackageReference Include="Sieve" Version="2.5.5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -23,6 +24,9 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Search.Domain\Search.Domain.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+    <ProjectReference Include="..\Search.BusinessLogic\Search.BusinessLogic.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>

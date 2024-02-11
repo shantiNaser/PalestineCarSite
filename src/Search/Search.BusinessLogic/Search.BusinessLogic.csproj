@@ -9,4 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Search.Infrastructure\Search.Infrastructure.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Service\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Service\" />
+  </ItemGroup>
 </Project>
