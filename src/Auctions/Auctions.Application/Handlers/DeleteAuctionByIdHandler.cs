@@ -17,6 +17,7 @@ public class DeleteAuctionByIdHandler : IRequestHandler<DeleteAuctionByIdCommand
     public async Task<bool> Handle(DeleteAuctionByIdCommand request, CancellationToken cancellationToken)
     {
         var auction = await _auctionsRepository.GetAuctionByIdAsync(request.AuctionId);
+        // TODO: Impleamnt a Pipline to validate the state of the Auction before Delete it
         if(auction is null)
         {
             throw new RecordNotFoundException(request.AuctionId);
