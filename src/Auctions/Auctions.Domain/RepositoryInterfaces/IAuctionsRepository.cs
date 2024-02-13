@@ -1,5 +1,4 @@
-﻿using System;
-using Auctions.Domain.Entites;
+﻿using Auctions.Domain.Entites;
 
 namespace Auctions.Domain.RepositoryInterfaces;
 

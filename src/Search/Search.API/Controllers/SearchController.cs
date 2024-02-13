@@ -1,7 +1,5 @@
-﻿using System;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Sieve.Models;
-using Sieve.Services;
 using Search.Domain.Models;
 using Search.BusinessLogic.Service;
 using Search.Domain;
@@ -17,13 +15,9 @@ public sealed class SearchController : ControllerBase
 {
     private readonly ISearchService _searchService;
 
-    // for development purpose only
-    private readonly AuctionServiceHttpClient _auctionServiceHttpClient;
-
-    public SearchController(ISearchService sieveProcessor, AuctionServiceHttpClient auctionServiceHttpClient)
+    public SearchController(ISearchService sieveProcessor)
     {
         _searchService = sieveProcessor;
-        _auctionServiceHttpClient = auctionServiceHttpClient;
     }
 
 

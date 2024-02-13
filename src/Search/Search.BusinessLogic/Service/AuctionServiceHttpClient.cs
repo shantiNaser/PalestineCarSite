@@ -1,10 +1,4 @@
-﻿using System;
-using System.Net.Http.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using MongoDB.Bson;
-using Newtonsoft.Json;
-using Search.BusinessLogic.Extension;
+﻿using Search.BusinessLogic.Extension;
 using Search.Domain.Models;
 using Search.Infrastructure.Repository;
 

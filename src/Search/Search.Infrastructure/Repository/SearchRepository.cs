@@ -1,7 +1,4 @@
-﻿using System;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Entities;
+﻿using MongoDB.Driver;
 using Search.Domain.Models;
 
 namespace Search.Infrastructure.Repository;

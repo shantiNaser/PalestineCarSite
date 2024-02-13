@@ -8,6 +8,7 @@ using Search.Infrastructure.Sieve;
 using Sieve.Services;
 using System.Text.Json;
 using Refit;
+using Search.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,22 +48,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-await DB.InitAsync("SearchDb", MongoClientSettings
-            .FromConnectionString(builder.Configuration.GetConnectionString("MongoDbConnection")));
-
-
-var count = await DB.CountAsync<Item>();
-
-
-using var scope = app.Services.CreateScope();
-
-var httpClient = scope.ServiceProvider.GetRequiredService<AuctionServiceHttpClient>();
-
-var items = await httpClient.GetItemsAsync();
-
-if(items.Count > 0)
+try
 {
-    await DB.SaveAsync(items);
+    await DbInitializer.InitDb(app);
+}
+catch (Exception ex)
+{
+    Console.WriteLine(ex);
 }
 
 app.Run();

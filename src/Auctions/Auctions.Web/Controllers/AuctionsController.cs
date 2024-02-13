@@ -1,5 +1,4 @@
-﻿using System;
-using Auctions.Application.Commands;
+﻿using Auctions.Application.Commands;
 using Auctions.Application.DTOs;
 using Auctions.Application.Queries;
 using Auctions.Domain.Exceptions;
