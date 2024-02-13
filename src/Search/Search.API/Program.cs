@@ -9,6 +9,10 @@ using Sieve.Services;
 using System.Text.Json;
 using Refit;
 using Search.API.Data;
+using Polly;
+using Polly.Extensions.Http;
+using System.Net;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,10 +41,12 @@ builder.Services
 
 builder.Services
     .AddRefitClient<IAuctionServiceHttpClient>()
+    .AddPolicyHandler(GetPolicy())
     .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:7001"));
 
+builder.Services
+    .AddScoped<AuctionServiceHttpClient>();
 
-builder.Services.AddScoped<AuctionServiceHttpClient>();
 
 var app = builder.Build();
 
@@ -48,13 +54,23 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-try
+app.Lifetime.ApplicationStarted.Register(async () =>
 {
-    await DbInitializer.InitDb(app);
-}
-catch (Exception ex)
-{
-    Console.WriteLine(ex);
-}
+    try
+    {
+        await DbInitializer.InitDb(app);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine(ex);
+    }
+});
 
 app.Run();
+
+
+static IAsyncPolicy<HttpResponseMessage> GetPolicy()
+    => HttpPolicyExtensions
+        .HandleTransientHttpError()
+        .OrResult(msg => msg.StatusCode == HttpStatusCode.NotFound)
+        .WaitAndRetryForeverAsync(_ => TimeSpan.FromSeconds(3));
