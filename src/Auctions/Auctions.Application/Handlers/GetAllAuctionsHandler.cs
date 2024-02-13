@@ -20,7 +20,7 @@ public class GetAllAuctionsHandler : IRequestHandler<GetAllAuctionsQuery, List<A
 
     public async Task<List<AuctionDto>> Handle(GetAllAuctionsQuery request, CancellationToken cancellationToken)
     {
-        var auctions = await _auctionsRepository.GetAllAuctionsAsync();
+        var auctions = await _auctionsRepository.GetAllAuctionsAsync(request.Date);
         return _mapper.Map<List<AuctionDto>>(auctions);
     }
 }

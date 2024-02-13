@@ -7,6 +7,7 @@ using Search.Infrastructure.Repository;
 using Search.Infrastructure.Sieve;
 using Sieve.Services;
 using System.Text.Json;
+using Refit;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +20,7 @@ var connectionUrl = builder.Configuration.GetConnectionString("MongoDbConnection
 var client = new MongoClient(connectionUrl);
 if (client == null)
 {
-    Console.WriteLine("You must set your 'MONGODB_URI' environment variable. To learn how to set it, see https://www.mongodb.com/docs/drivers/csharp/current/quick-start/#set-your-connection-string");
+    Console.WriteLine("There's an issue while reading the Conection String. or it does not set corectly");
     Environment.Exit(0);
 }
 var database = client.GetDatabase("SearchDb");
@@ -33,6 +34,13 @@ builder.Services
     .AddScoped<ISearchService, SearchService>()
     .AddScoped<ISearchRepository, SearchRepository>();
 
+builder.Services
+    .AddRefitClient<IAuctionServiceHttpClient>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://localhost:7001"));
+
+
+builder.Services.AddScoped<AuctionServiceHttpClient>();
+
 var app = builder.Build();
 
 app.UseAuthorization();
@@ -45,32 +53,16 @@ await DB.InitAsync("SearchDb", MongoClientSettings
 
 var count = await DB.CountAsync<Item>();
 
-// seed some data if there's no data here
-await TrySeedDataToMongoCollection(count);
+
+using var scope = app.Services.CreateScope();
+
+var httpClient = scope.ServiceProvider.GetRequiredService<AuctionServiceHttpClient>();
+
+var items = await httpClient.GetItemsAsync();
+
+if(items.Count > 0)
+{
+    await DB.SaveAsync(items);
+}
 
 app.Run();
-
-static async Task TrySeedDataToMongoCollection(long count)
-{
-    try
-    {
-        if (count == 0)
-        {
-            //TODO: Modify this with Logs
-            Console.WriteLine("Seed some data from a json file");
-
-            var itemData = await File.ReadAllTextAsync("Data/Auctions.json");
-
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-
-            var items = JsonSerializer.Deserialize<List<Item>>(itemData, options);
-
-            await DB.SaveAsync(items);
-        }
-    }
-    catch (Exception ex)
-    {
-        Console.WriteLine(ex.Message);
-    }
-    
-}

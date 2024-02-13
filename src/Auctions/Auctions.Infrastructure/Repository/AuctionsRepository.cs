@@ -12,12 +12,20 @@ public class AuctionsRepository : IAuctionsRepository
 
     public AuctionsRepository(AuctionDbContext dbContext) => this._dbContext = dbContext;
 
-    public async Task<List<Auction>> GetAllAuctionsAsync()
+    public async Task<List<Auction>> GetAllAuctionsAsync(string? date)
     {
-        return await this._dbContext.Auctions
+        var query = this._dbContext.Auctions
             .Include(x => x.Item)
-            .AsNoTracking()
-            .ToListAsync();
+            .OrderBy(x => x.Item.Make)
+            .AsQueryable();
+
+        if (!string.IsNullOrEmpty(date))
+        {
+            var parsedDate = DateTime.Parse(date).ToUniversalTime();
+            query = query.Where(x => x.UpdatedAt > parsedDate);
+        }
+
+        return await query.AsNoTracking().ToListAsync();
     }
 
     public async Task<Auction?> GetAuctionByIdAsync(Guid auctionId)

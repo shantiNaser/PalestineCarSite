@@ -11,5 +11,11 @@ public interface ISearchRepository
     /// </summary>
     /// <returns></returns>
     Task<IQueryable<Item>> SearchAsync();
+
+    /// <summary>
+    /// Get the date of the last Updated Item exsited on Serach service
+    /// </summary>
+    /// <returns></returns>
+    Task<string> GetLastDateForUpdatedItem();
 }
 

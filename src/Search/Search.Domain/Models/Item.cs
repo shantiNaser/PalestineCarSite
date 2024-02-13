@@ -1,4 +1,5 @@
 ﻿using MongoDB.Entities;
+using Newtonsoft.Json;
 using Sieve.Attributes;
 
 namespace Search.Domain.Models;
@@ -32,6 +33,7 @@ public class Item : Entity
     [Sieve(CanSort = true)]
     public DateTime AuctionEnd { get; set; }
 
+    [JsonProperty(propertyName: "Item")]
     public ItemData Data { get; set; }
 }
 

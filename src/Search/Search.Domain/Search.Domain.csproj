@@ -15,5 +15,6 @@
   <ItemGroup>
     <PackageReference Include="MongoDB.Entities" Version="22.0.0" />
     <PackageReference Include="Sieve" Version="2.5.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

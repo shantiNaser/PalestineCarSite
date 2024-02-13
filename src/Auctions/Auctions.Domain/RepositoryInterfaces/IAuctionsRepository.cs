@@ -9,7 +9,7 @@ public interface IAuctionsRepository
     /// Get All Auctions 
     /// </summary>
     /// <returns></returns>
-    Task<List<Auction>> GetAllAuctionsAsync();
+    Task<List<Auction>> GetAllAuctionsAsync(string? date);
 
     /// <summary>
     /// Get Auction By Id

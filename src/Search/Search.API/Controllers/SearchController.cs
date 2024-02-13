@@ -17,9 +17,13 @@ public sealed class SearchController : ControllerBase
 {
     private readonly ISearchService _searchService;
 
-    public SearchController(ISearchService sieveProcessor)
+    // for development purpose only
+    private readonly AuctionServiceHttpClient _auctionServiceHttpClient;
+
+    public SearchController(ISearchService sieveProcessor, AuctionServiceHttpClient auctionServiceHttpClient)
     {
         _searchService = sieveProcessor;
+        _auctionServiceHttpClient = auctionServiceHttpClient;
     }
 
 
@@ -29,7 +33,9 @@ public sealed class SearchController : ControllerBase
     /// <param name="sieveModel"></param>
     /// <returns></returns>
     [HttpGet]
+    [ProducesResponseType(typeof(RetrieveListViewResponse<Item>), StatusCodes.Status200OK)]
     public async Task<RetrieveListViewResponse<Item>> SearchAsync([FromBody] SieveModel sieveModel) =>
         await _searchService.SearchAsync(sieveModel);
+
 }
 

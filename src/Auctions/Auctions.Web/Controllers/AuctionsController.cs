@@ -29,9 +29,9 @@ public sealed class AuctionsController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [ProducesResponseType(typeof(List<AuctionDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetAllAuctionsAsync()
+    public async Task<IActionResult> GetAllAuctionsAsync([FromQuery] string? date)
     {
-        var auctions = new GetAllAuctionsQuery();
+        var auctions = new GetAllAuctionsQuery(date);
         var result = await _mediater.Send(auctions);
         return Ok(result);
     }

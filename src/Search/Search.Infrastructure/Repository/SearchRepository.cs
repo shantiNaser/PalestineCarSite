@@ -22,5 +22,14 @@ public class SearchRepository : ISearchRepository
         var result = await _collection.Find(_ => true).ToListAsync();
         return result.AsQueryable();
     }
+
+    /// <inheritdoc/>
+    public async Task<string> GetLastDateForUpdatedItem()
+    {
+        return await _collection.Find(_ => true)
+            .SortByDescending(x => x.UpdatedAt)
+            .Project(x => x.UpdatedAt.ToString())
+            .FirstOrDefaultAsync();
+    }
 }
 
